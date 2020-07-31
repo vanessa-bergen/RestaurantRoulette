@@ -13,6 +13,7 @@
 		C2C08A7924D473AE007FB484 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2C08A7824D473AE007FB484 /* Assets.xcassets */; };
 		C2C08A7C24D473AE007FB484 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2C08A7B24D473AE007FB484 /* Preview Assets.xcassets */; };
 		C2C08A7F24D473AE007FB484 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2C08A7D24D473AE007FB484 /* LaunchScreen.storyboard */; };
+		C2C08A8924D475B6007FB484 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C08A8824D475B6007FB484 /* Config.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		C2C08A7B24D473AE007FB484 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C2C08A7E24D473AE007FB484 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C2C08A8024D473AE007FB484 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C2C08A8824D475B6007FB484 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				C2C08A7224D473AA007FB484 /* AppDelegate.swift */,
+				C2C08A8824D475B6007FB484 /* Config.swift */,
 				C2C08A7424D473AA007FB484 /* SceneDelegate.swift */,
 				C2C08A7624D473AA007FB484 /* ContentView.swift */,
 				C2C08A7824D473AE007FB484 /* Assets.xcassets */,
@@ -147,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2C08A7324D473AA007FB484 /* AppDelegate.swift in Sources */,
+				C2C08A8924D475B6007FB484 /* Config.swift in Sources */,
 				C2C08A7524D473AA007FB484 /* SceneDelegate.swift in Sources */,
 				C2C08A7724D473AA007FB484 /* ContentView.swift in Sources */,
 			);
