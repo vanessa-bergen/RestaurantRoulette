@@ -22,7 +22,7 @@ class GoogleData: ObservableObject {
     ) {
         print("triggered")
         print(location)
-        guard let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(location.latitude),\(location.longitude)&radius=1500&type=restaurant&keyword=asian&key=AIzaSyBXH4Jxy02p-wwV-d_HC-EPeIBa-E7BjQk&opennow=true") else {
+        guard let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(location.latitude),\(location.longitude)&radius=1500&type=restaurant&keyword=asian&key=\(API_KEY)&opennow=true") else {
             print("Invalid URL")
             return
         }
