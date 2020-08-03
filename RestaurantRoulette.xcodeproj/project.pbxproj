@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		02F562A1200A4D1C66C90D43 /* libPods-RestaurantRoulette.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6970BE111B9A7AE3AAF6C8D4 /* libPods-RestaurantRoulette.a */; };
+		C277FF3824D8955200DC1B5E /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277FF3724D8955200DC1B5E /* Result.swift */; };
+		C277FF3A24D8970100DC1B5E /* GoogleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C277FF3924D8970100DC1B5E /* GoogleData.swift */; };
 		C2C08A7324D473AA007FB484 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C08A7224D473AA007FB484 /* AppDelegate.swift */; };
 		C2C08A7524D473AA007FB484 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C08A7424D473AA007FB484 /* SceneDelegate.swift */; };
 		C2C08A7724D473AA007FB484 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C08A7624D473AA007FB484 /* ContentView.swift */; };
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		6970BE111B9A7AE3AAF6C8D4 /* libPods-RestaurantRoulette.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RestaurantRoulette.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C09707DFC52386CDF3068E84 /* Pods-RestaurantRoulette.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RestaurantRoulette.release.xcconfig"; path = "Target Support Files/Pods-RestaurantRoulette/Pods-RestaurantRoulette.release.xcconfig"; sourceTree = "<group>"; };
+		C277FF3724D8955200DC1B5E /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		C277FF3924D8970100DC1B5E /* GoogleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleData.swift; sourceTree = "<group>"; };
 		C2C08A6F24D473AA007FB484 /* RestaurantRoulette.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RestaurantRoulette.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2C08A7224D473AA007FB484 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C2C08A7424D473AA007FB484 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 				C2C08A7424D473AA007FB484 /* SceneDelegate.swift */,
 				C2C08A7624D473AA007FB484 /* ContentView.swift */,
 				C2C08A8E24D4B1D9007FB484 /* GoogleMapsView.swift */,
+				C277FF3724D8955200DC1B5E /* Result.swift */,
+				C277FF3924D8970100DC1B5E /* GoogleData.swift */,
 				C2C08A9224D4B4D4007FB484 /* LocationManager.swift */,
 				C2C08A8A24D480B3007FB484 /* FilterView.swift */,
 				C2C08A8C24D4ADDC007FB484 /* PriceView.swift */,
@@ -233,7 +239,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C277FF3824D8955200DC1B5E /* Result.swift in Sources */,
 				C2C08A7324D473AA007FB484 /* AppDelegate.swift in Sources */,
+				C277FF3A24D8970100DC1B5E /* GoogleData.swift in Sources */,
 				C2C08A8F24D4B1D9007FB484 /* GoogleMapsView.swift in Sources */,
 				C2C08A8924D475B6007FB484 /* Config.swift in Sources */,
 				C2C08A8D24D4ADDC007FB484 /* PriceView.swift in Sources */,
