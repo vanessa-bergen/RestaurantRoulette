@@ -14,8 +14,18 @@ struct Response: Codable {
 }
 
 struct Result: Codable {
-    //var id: String
-    var name: String
-    //var rating: Double
-    //var price_level: Int
+    var place_id: String
+    var name: String?
+    var rating: Double?
+    var vicinity: String?
+    var price_level: Int?
+    
+    var ratingFormatted: String {
+        if let rating = self.rating {
+            return String(format: "%.1f", rating)
+        } else {
+            return "No Rating"
+        }
+    }
+    
 }

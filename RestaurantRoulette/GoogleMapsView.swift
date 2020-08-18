@@ -14,8 +14,12 @@ struct GoogleMapsView: UIViewRepresentable {
     @EnvironmentObject var locationManager: LocationManager
     //@ObservedObject var googleData = GoogleData()
     @EnvironmentObject var googleData: GoogleData
-    @State private var centerCoordinate = CLLocationCoordinate2D()
+    @Binding var centerCoordinate: CLLocationCoordinate2D
     @State private var mapMoved = false
+    
+    @Binding var radius: Double
+    @Binding var openNow: Bool
+    @Binding var price: Int
  
     // a zoom level of 15 shows streets
     private let zoom: Float = 15.0
@@ -42,10 +46,9 @@ struct GoogleMapsView: UIViewRepresentable {
         marker.isDraggable = true
         marker.appearAnimation = .pop
         marker.icon = GMSMarker.markerImage(with: UIColor.blue)
-        print(marker.icon?.size ?? "no size")
-        //marker.setIconSize(scaledToSize: .init(width: 40, height: 40))
         marker.setIconScale(originalSize: marker.icon?.size ?? .init(width: 26, height: 41), scaledBy: 2)
         marker.map = mapView
+        
         
         
         
@@ -61,8 +64,11 @@ struct GoogleMapsView: UIViewRepresentable {
 //            mapView.animate(toLocation: CLLocationCoordinate2D(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude))
 //        }
         if !self.mapMoved {
+            
             mapView.animate(toLocation: CLLocationCoordinate2D(latitude: locationManager.latitude, longitude: locationManager.longitude))
             marker.position = CLLocationCoordinate2D(latitude: locationManager.latitude, longitude: locationManager.longitude)
+            //self.googleData.centerCoordinate = CLLocationCoordinate2D(latitude: locationManager.latitude, longitude: locationManager.longitude)
+            
         }
         //else {
 //            mapView.animate(toLocation: CLLocationCoordinate2D(latitude: marker.position.latitude, longitude: marker.position.longitude))
@@ -80,44 +86,75 @@ struct GoogleMapsView: UIViewRepresentable {
             self.parent = parent
         }
         
-//        func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
-//            // user has moved the map
-//            parent.mapMoved = true
-//        }
-//
+        func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
+            // user has moved the map
+            if gesture {
+                self.parent.mapMoved = true
+            }
+        }
+
+        
+        
         func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
             // moving the center marker as the map moves
 //            parent.marker.position = CLLocationCoordinate2D(latitude: position.target.latitude, longitude: position.target.longitude)
-            print("did change")
-            if !self.parent.mapMoved {
-                self.parent.marker.position = CLLocationCoordinate2D(latitude: self.parent.locationManager.latitude, longitude: self.parent.locationManager.longitude)
-            }
+//            print("did change")
+//            if !self.parent.mapMoved {
+//                self.parent.marker.position = CLLocationCoordinate2D(latitude: self.parent.locationManager.latitude, longitude: self.parent.locationManager.longitude)
+//                
+//                self.parent.centerCoordinate = self.parent.marker.position
+//                
+//                self.parent.googleData.loadData(
+//                    near: self.parent.marker.position,
+//                    radius: self.parent.radius,
+//                    openNow: self.parent.openNow
+//                )
+//            }
+            
+//            if !self.parent.mapMoved {
+//                self.parent.googleData.centerCoordinate = position.target
+//            }
             
         }
-//        
-//        func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
-//            // updating the centerCoordinate to be in the center of the map when the map stops moving
-//            parent.centerCoordinate = CLLocationCoordinate2D(latitude: position.target.latitude, longitude: position.target.longitude)
-//            parent.marker.position = CLLocationCoordinate2D(latitude: position.target.latitude, longitude: position.target.longitude)
-//
-//        }
+         
         
-        func mapView(_ mapView: GMSMapView, didDrag marker: GMSMarker) {
-            print("dragging")
-        }
         func mapView(_ mapView: GMSMapView, didBeginDragging marker: GMSMarker) {
-            print("began dragging")
             self.parent.mapMoved = true
         }
+        
         func mapView(_ mapView: GMSMapView, didEndDragging marker: GMSMarker) {
+            print("dragged")
             print(marker.position)
             mapView.animate(toLocation: CLLocationCoordinate2D(latitude: marker.position.latitude, longitude: marker.position.longitude))
-            
-            
+            self.parent.centerCoordinate = marker.position
+//            self.parent.googleData.loadData(
+//                near: marker.position,
+//                radius: self.parent.radius,
+//                openNow: self.parent.openNow
+//            )
+ 
         }
+        
         func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
-            self.parent.googleData.loadData(near: position.target)
-            print(self.parent.googleData.results)
+            print("idle position \(position)")
+            
+            if !self.parent.mapMoved {
+                self.parent.googleData.centerCoordinate = CLLocationCoordinate2D(latitude: self.parent.locationManager.latitude, longitude: self.parent.locationManager.longitude)
+            }
+        }
+        
+        func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
+            print("tapped")
+            self.parent.mapMoved = true
+            self.parent.marker.position = coordinate
+            mapView.animate(toLocation: coordinate)
+            
+            self.parent.googleData.centerCoordinate = coordinate
+//            self.parent.googleData.loadData(
+//                near: coordinate,
+//                radius: self.parent.radius,
+//                openNow: self.parent.openNow
+//            )
         }
     }
 }
@@ -142,3 +179,5 @@ extension GMSMarker {
         icon = newImage
     }
 }
+
+
