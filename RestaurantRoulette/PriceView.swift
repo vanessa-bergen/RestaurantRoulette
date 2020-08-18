@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct PriceView: View {
-    @Environment(\.managedObjectContext) var moc
+    
     @Binding var price: Int
     
     var maxPrice: Int
@@ -17,9 +17,11 @@ struct PriceView: View {
     var offImage = "dollarEmpty"
     
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
             ForEach(1..<maxPrice+1) { number in
                 self.image(for: number)
+                    .resizable()
+                    .frame(width: 36, height: 36)
                     .onTapGesture {
                         self.price = number
                     }
