@@ -14,12 +14,14 @@ struct GoogleMapsView: UIViewRepresentable {
     @EnvironmentObject var locationManager: LocationManager
     //@ObservedObject var googleData = GoogleData()
     @EnvironmentObject var googleData: GoogleData
-    @Binding var centerCoordinate: CLLocationCoordinate2D
+//    @Binding var centerCoordinate: CLLocationCoordinate2D
     @State private var mapMoved = false
     
-    @Binding var radius: Double
-    @Binding var openNow: Bool
-    @Binding var price: Int
+    @State private var initialLoad = true
+    
+//    @Binding var radius: Double
+//    @Binding var openNow: Bool
+//    @Binding var price: Int
  
     // a zoom level of 15 shows streets
     private let zoom: Float = 15.0
@@ -92,32 +94,7 @@ struct GoogleMapsView: UIViewRepresentable {
                 self.parent.mapMoved = true
             }
         }
-
-        
-        
-        func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
-            // moving the center marker as the map moves
-//            parent.marker.position = CLLocationCoordinate2D(latitude: position.target.latitude, longitude: position.target.longitude)
-//            print("did change")
-//            if !self.parent.mapMoved {
-//                self.parent.marker.position = CLLocationCoordinate2D(latitude: self.parent.locationManager.latitude, longitude: self.parent.locationManager.longitude)
-//                
-//                self.parent.centerCoordinate = self.parent.marker.position
-//                
-//                self.parent.googleData.loadData(
-//                    near: self.parent.marker.position,
-//                    radius: self.parent.radius,
-//                    openNow: self.parent.openNow
-//                )
-//            }
-            
-//            if !self.parent.mapMoved {
-//                self.parent.googleData.centerCoordinate = position.target
-//            }
-            
-        }
          
-        
         func mapView(_ mapView: GMSMapView, didBeginDragging marker: GMSMarker) {
             self.parent.mapMoved = true
         }
@@ -126,7 +103,7 @@ struct GoogleMapsView: UIViewRepresentable {
             print("dragged")
             print(marker.position)
             mapView.animate(toLocation: CLLocationCoordinate2D(latitude: marker.position.latitude, longitude: marker.position.longitude))
-            self.parent.centerCoordinate = marker.position
+            self.parent.googleData.centerCoordinate = marker.position
 //            self.parent.googleData.loadData(
 //                near: marker.position,
 //                radius: self.parent.radius,
@@ -138,8 +115,10 @@ struct GoogleMapsView: UIViewRepresentable {
         func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
             print("idle position \(position)")
             
-            if !self.parent.mapMoved {
+            if self.parent.initialLoad {
+                print("setting center coordinate")
                 self.parent.googleData.centerCoordinate = CLLocationCoordinate2D(latitude: self.parent.locationManager.latitude, longitude: self.parent.locationManager.longitude)
+                self.parent.initialLoad = false
             }
         }
         

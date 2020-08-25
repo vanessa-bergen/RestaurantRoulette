@@ -19,11 +19,11 @@ class GoogleData: ObservableObject {
     
     var temp = [Result]()
     
-    @Published var radius: Double = 5
-    @Published var price = 2
-
+    @Published var radius: Double = 5 
+    @Published var price = 4
     @Published var openNow = true
-    var foodTypes: [String] = [] {
+
+    var foodTypes: [String] = [""] {
         didSet {
             print("foodTypes \(foodTypes)")
         }
@@ -33,7 +33,7 @@ class GoogleData: ObservableObject {
         didSet {
             print("center coordinate set \(centerCoordinate)")
             loadData(
-                near: centerCoordinate,
+                near: self.centerCoordinate,
                 radius: self.radius,
                 openNow: self.openNow,
                 foodTypes: self.foodTypes
@@ -48,15 +48,9 @@ class GoogleData: ObservableObject {
         radius: Double,
         openNow: Bool,
         foodTypes: [String]
-        //completionHandler: @escaping ([Result]) -> Void
     ) {
         print("called loadData")
         temp.removeAll()
-        
-        if foodTypes.isEmpty {
-            print("food is empty")
-            self.foodTypes = [""]
-        }
         
         let urls = foodTypes.map { "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(location.latitude),\(location.longitude)&radius=\(radius * 1000)&type=restaurant&keyword=\($0)&key=\(API_KEY)"
             
@@ -78,13 +72,16 @@ class GoogleData: ObservableObject {
             
             URLSession.shared.dataTask(with: request) { data, response, error in
                 if let error = error {
-                    fatalError("Error: \(error.localizedDescription)")
+                    print("Error: \(error.localizedDescription)")
+                    return
                 }
                 guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                    fatalError("Error: invalid HTTP response code")
+                    print("Error: invalid HTTP response code")
+                    return
                 }
                 guard let data = data else {
-                    fatalError("Error: missing response data")
+                    print("Error: missing response data")
+                    return
                 }
                     
                 do {
@@ -94,6 +91,8 @@ class GoogleData: ObservableObject {
                     DispatchQueue.main.async {
                         // update our UI
                         self.temp.append(contentsOf: decodedResponse.results)
+                        
+                        
                         //self.googleData.results.append(contentsOf: decodedResponse.results)
                         //self.googleData.results = decodedResponse.results
                         //print("results 1\(self.temp)")
@@ -114,9 +113,19 @@ class GoogleData: ObservableObject {
 
         group.notify(queue: DispatchQueue.main) {
             print("done dispath")
-            //print("temp \(self.temp)")
-            self.results = self.temp.map { $0 }
+            print("temp \(self.temp)")
+            // removing any duplicates
+            self.temp = Array(Set(self.temp))
+            //self.results = self.temp.map { $0 }
             //print("new results \(self.results)")
+            self.results = self.temp.filter {
+                if self.openNow == true {
+                    return $0.price <= self.price && $0.open
+                } else {
+                    return $0.price <= self.price
+                }
+            }
+            //print("filtered results \(filteredResults)")
             
             //completionHandler(self.temp)
             //completionHandler(self.temp)
