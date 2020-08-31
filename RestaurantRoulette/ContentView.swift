@@ -9,15 +9,16 @@
 import SwiftUI
 import CoreLocation
 
+enum ActiveAlert {
+    case info, error
+}
+
 struct ContentView: View {
     
-    //@ObservedObject var googleData = GoogleData()
     @EnvironmentObject var googleData: GoogleData
     
-    //@State private var results = [Result]()
-    
-    @State private var showingInfo = false
-    @State private var errorAlert = false
+    @State private var showAlert = false
+    @State private var activeAlert: ActiveAlert = .info
     
     @State private var actionState: Int? = 0
     @State private var randomIndex: Int = 0
@@ -46,8 +47,8 @@ struct ContentView: View {
                     
                     Button(action: {
                         if self.googleData.results.isEmpty {
-                            print("empty results")
-                            self.errorAlert = true
+                            self.activeAlert = .error
+                            self.showAlert = true
                             
                         } else {
                             self.randomIndex = Int.random(in: 0..<self.googleData.results.count)
@@ -59,31 +60,35 @@ struct ContentView: View {
                         Text("Play Roulette!")
                     }
                     .buttonStyle()
-                    .alert(isPresented: self.$errorAlert) {
-                        Alert(
-                            title: Text("Error"),
-                            message: Text("No restaurants to pick from, try a new area."),
-                            dismissButton: .default(Text("OK"))
-                            )
-                    }
-
                 }
-                
+
                 NearbyPlacesView()
                 
-
             }
-
-            .alert(isPresented: self.$showingInfo) {
-                Alert(title: Text("Info"),
-                      message: Text("Drag the marker to desired location to search for restaurants nearby."),
-                      dismissButton: .default(Text("Got it!")))
+            .alert(isPresented: self.$showAlert) {
+                switch self.activeAlert {
+                case .info:
+                    return Alert(
+                        title: Text("Info"),
+                        message: Text("Drag the marker to desired location to search for restaurants nearby."),
+                        dismissButton: .default(Text("Got it!"))
+                    )
+                
+                case .error:
+                    return Alert(
+                        title: Text("Error"),
+                        message: Text("No restaurants to pick from, try a new area."),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
+                
             }
             
             .navigationBarTitle("Restaurant Roulette!", displayMode: .inline)
             .navigationBarItems(leading:
                 Button(action: {
-                    self.showingInfo = true
+                    self.activeAlert = .info
+                    self.showAlert = true
                 }) {
                     Image("info")
                         .renderingMode(.original)
@@ -93,7 +98,6 @@ struct ContentView: View {
                 },
                 trailing:
                 NavigationLink(destination: FilterView()) {
-                    //Image(systemName: "slider.horizontal.3")
                     Image("slider")
                         .renderingMode(.original)
                         .resizable()
