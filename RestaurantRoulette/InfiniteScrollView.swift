@@ -56,8 +56,6 @@ struct InfiniteScrollView: UIViewRepresentable {
             self.parent = parent
         }
         
-        
-        
         func numberOfSections(in collectionView: UICollectionView) -> Int {
             return 1
         }
@@ -68,10 +66,6 @@ struct InfiniteScrollView: UIViewRepresentable {
         
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             
-            //let dataSource = [0,1,2,3,4,5,6,7,8,9]
-//            let itemToShow = dataSource[indexPath.row % dataSource.count]
-//
-//
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RestaurantCell.reuseId, for: indexPath) as! RestaurantCell
             
             if !self.finishedScrolling {
@@ -188,16 +182,16 @@ extension UICollectionView {
         let co = self.contentOffset.y
         let no = co + 50
         
-//        UIView.animate(withDuration: 0.001, delay: 0, options: .curveEaseInOut, animations: {
-//            self.contentOffset = CGPoint(x: 0, y: no)
-//            }) { (status) in
-//                if co + 10 > offset {
-//                    self.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
-//                } else {
-//                    self.autoScroll(to: offset)
-//                }
-//        }
-        self.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+        UIView.animate(withDuration: 0.001, delay: 0, options: .curveEaseInOut, animations: {
+            self.contentOffset = CGPoint(x: 0, y: no)
+            }) { (status) in
+                if co + 50 > offset {
+                    self.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
+                } else {
+                    self.autoScroll(to: offset)
+                }
+        }
+        
     }
     
     func calcOffset(for index: Int) {

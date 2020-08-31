@@ -15,7 +15,6 @@ struct RestaurantView: View {
     
     @Binding var randomIndex: Int
     @State private var errorAlert = false
-    //@State private var chosenRestaurant: Result?
     
     var chosenRestaurant: Result {
         self.googleData.results[randomIndex]
@@ -36,7 +35,7 @@ struct RestaurantView: View {
                 if self.doneScrolling {
                     Button(action: {
                         guard let coordinate = self.chosenRestaurant.coordinate else {
-                            //TODO add error here
+                            self.errorAlert = true
                             return
                         }
                         self.openMapsAppWithDirections(to: coordinate, destinationName: self.chosenRestaurant.name ?? "")
@@ -49,6 +48,9 @@ struct RestaurantView: View {
                     .buttonStyle()
                     .padding(.bottom, 20)
                 }
+            }
+            .alert(isPresented: self.errorAlert) {
+                Alert(title: "Error Getting Directions", message: "Not able to display directions", dismissButton: .default("Ok"))
             }
         }
     }

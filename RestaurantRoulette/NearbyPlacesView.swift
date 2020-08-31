@@ -43,14 +43,12 @@ struct NearbyPlacesView: View {
                             }
                             
                             Text(result.vicinity ?? "Address Not Found")
-                                
                         }
                         .font(.subheadline)
                         .lineLimit(nil)
                     }
                 }
             }
-            //.navigationBarTitle(Text("Nearby Restaurants"), displayMode: .inline)
         }
     }
 }

@@ -12,17 +12,11 @@ import SwiftUI
 struct GoogleMapsView: UIViewRepresentable {
     
     @EnvironmentObject var locationManager: LocationManager
-    //@ObservedObject var googleData = GoogleData()
     @EnvironmentObject var googleData: GoogleData
-//    @Binding var centerCoordinate: CLLocationCoordinate2D
     @State private var mapMoved = false
     
     @State private var initialLoad = true
-    
-//    @Binding var radius: Double
-//    @Binding var openNow: Bool
-//    @Binding var price: Int
- 
+
     // a zoom level of 15 shows streets
     private let zoom: Float = 15.0
     
@@ -58,23 +52,13 @@ struct GoogleMapsView: UIViewRepresentable {
     }
     
     func updateUIView(_ mapView: GMSMapView, context: Context) {
-        //print("Map moved \(self.mapMoved)")
-        // if the user hasn't moved the map yet, defualt it's location to the user's location
-//        if !self.mapMoved {
-//            mapView.animate(toLocation: CLLocationCoordinate2D(latitude: locationManager.latitude, longitude: locationManager.longitude))
-//        } else {
-//            mapView.animate(toLocation: CLLocationCoordinate2D(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude))
-//        }
+
         if !self.mapMoved {
             
             mapView.animate(toLocation: CLLocationCoordinate2D(latitude: locationManager.latitude, longitude: locationManager.longitude))
             marker.position = CLLocationCoordinate2D(latitude: locationManager.latitude, longitude: locationManager.longitude)
-            //self.googleData.centerCoordinate = CLLocationCoordinate2D(latitude: locationManager.latitude, longitude: locationManager.longitude)
             
         }
-        //else {
-//            mapView.animate(toLocation: CLLocationCoordinate2D(latitude: marker.position.latitude, longitude: marker.position.longitude))
-//        }
     }
     
     func makeCoordinator() -> Coordinator {
@@ -104,11 +88,6 @@ struct GoogleMapsView: UIViewRepresentable {
             print(marker.position)
             mapView.animate(toLocation: CLLocationCoordinate2D(latitude: marker.position.latitude, longitude: marker.position.longitude))
             self.parent.googleData.centerCoordinate = marker.position
-//            self.parent.googleData.loadData(
-//                near: marker.position,
-//                radius: self.parent.radius,
-//                openNow: self.parent.openNow
-//            )
  
         }
         
@@ -123,17 +102,12 @@ struct GoogleMapsView: UIViewRepresentable {
         }
         
         func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-            print("tapped")
+            
             self.parent.mapMoved = true
             self.parent.marker.position = coordinate
             mapView.animate(toLocation: coordinate)
-            
             self.parent.googleData.centerCoordinate = coordinate
-//            self.parent.googleData.loadData(
-//                near: coordinate,
-//                radius: self.parent.radius,
-//                openNow: self.parent.openNow
-//            )
+
         }
     }
 }

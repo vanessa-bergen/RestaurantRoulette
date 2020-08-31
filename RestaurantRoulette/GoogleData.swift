@@ -86,17 +86,10 @@ class GoogleData: ObservableObject {
                     
                 do {
                     let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
-                    print("in decoder 1")
-                        // we have good data – go back to the main thread
+                    
                     DispatchQueue.main.async {
-                        // update our UI
+                        
                         self.temp.append(contentsOf: decodedResponse.results)
-                        
-                        
-                        //self.googleData.results.append(contentsOf: decodedResponse.results)
-                        //self.googleData.results = decodedResponse.results
-                        //print("results 1\(self.temp)")
-                        //self.results = self.temp.map { $0 }
                         self.group.leave()
                     }
                     return
@@ -116,8 +109,7 @@ class GoogleData: ObservableObject {
             print("temp \(self.temp)")
             // removing any duplicates
             self.temp = Array(Set(self.temp))
-            //self.results = self.temp.map { $0 }
-            //print("new results \(self.results)")
+            // filtering the results since the nearby search does not work as expected when multiple filter criteria are added
             self.results = self.temp.filter {
                 if self.openNow == true {
                     return $0.price <= self.price && $0.open
@@ -125,11 +117,6 @@ class GoogleData: ObservableObject {
                     return $0.price <= self.price
                 }
             }
-            //print("filtered results \(filteredResults)")
-            
-            //completionHandler(self.temp)
-            //completionHandler(self.temp)
         }
-
     }
 }
