@@ -24,7 +24,7 @@ struct GoogleMapsView: UIViewRepresentable {
     let marker : GMSMarker = GMSMarker()
     
     func makeUIView(context: Self.Context) -> GMSMapView {
-        print(self.mapMoved)
+        
         // set the map to the user's current location
         let camera = GMSCameraPosition.camera(withLatitude: locationManager.latitude, longitude: locationManager.longitude, zoom: zoom)
         let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
@@ -84,18 +84,16 @@ struct GoogleMapsView: UIViewRepresentable {
         }
         
         func mapView(_ mapView: GMSMapView, didEndDragging marker: GMSMarker) {
-            print("dragged")
-            print(marker.position)
+
             mapView.animate(toLocation: CLLocationCoordinate2D(latitude: marker.position.latitude, longitude: marker.position.longitude))
             self.parent.googleData.centerCoordinate = marker.position
  
         }
         
         func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
-            print("idle position \(position)")
-            
+           
             if self.parent.initialLoad {
-                print("setting center coordinate")
+                
                 self.parent.googleData.centerCoordinate = CLLocationCoordinate2D(latitude: self.parent.locationManager.latitude, longitude: self.parent.locationManager.longitude)
                 self.parent.initialLoad = false
             }

@@ -49,8 +49,8 @@ struct RestaurantView: View {
                     .padding(.bottom, 20)
                 }
             }
-            .alert(isPresented: self.errorAlert) {
-                Alert(title: "Error Getting Directions", message: "Not able to display directions", dismissButton: .default("Ok"))
+            .alert(isPresented: self.$errorAlert) {
+                Alert(title: Text("Error Getting Directions"), message: Text("Not able to display directions"), dismissButton: .default(Text("Ok")))
             }
         }
     }

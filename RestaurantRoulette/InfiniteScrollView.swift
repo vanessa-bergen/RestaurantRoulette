@@ -35,6 +35,7 @@ struct InfiniteScrollView: UIViewRepresentable {
 
         DispatchQueue.main.async {
             // spin it three times before landing on the chosen index
+            //uiView.calcOffset(for: self.indexToScroll + self.dataSource.count < 6 ? self.dataSource.count * 5 : self.dataSource.count * 3)
             uiView.calcOffset(for: self.indexToScroll + self.dataSource.count * 3)
         }
         
@@ -46,7 +47,7 @@ struct InfiniteScrollView: UIViewRepresentable {
         var parent: InfiniteScrollView
         var finishedScrolling = false {
             didSet {
-                print("finished scrolling \(finishedScrolling)")
+                
                 parent.uiCollectionView.reloadData()
                 parent.doneScrolling = finishedScrolling
             }
@@ -61,7 +62,7 @@ struct InfiniteScrollView: UIViewRepresentable {
         }
         
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return self.parent.dataSource.count * 5
+            return self.parent.dataSource.count * 10
         }
         
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -85,8 +86,6 @@ struct InfiniteScrollView: UIViewRepresentable {
 
             }
             
-            
-            //cell.backgroundColor = .white
             cell.layer.cornerRadius = 10
             cell.layer.borderWidth = 1.0
 
@@ -112,7 +111,7 @@ struct InfiniteScrollView: UIViewRepresentable {
         }
         
         func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-            print("animation done")
+            
             self.finishedScrolling = true
         }
             
@@ -178,17 +177,18 @@ class RestaurantCell: UICollectionViewCell {
 
 extension UICollectionView {
     
-    func autoScroll (to offset: CGFloat) {
+    func autoScroll (to offset: CGFloat, with step: CGFloat) {
         let co = self.contentOffset.y
-        let no = co + 50
+        let no = co + step
         
-        UIView.animate(withDuration: 0.001, delay: 0, options: .curveEaseInOut, animations: {
+        // animate approx 1/30th of a second since that's how often the screen refreshes
+        UIView.animate(withDuration: 0.033, delay: 0, options: .curveEaseInOut, animations: {
             self.contentOffset = CGPoint(x: 0, y: no)
             }) { (status) in
-                if co + 50 > offset {
+                if co + step > offset {
                     self.setContentOffset(CGPoint(x: 0, y: offset), animated: true)
                 } else {
-                    self.autoScroll(to: offset)
+                    self.autoScroll(to: offset, with: step)
                 }
         }
         
@@ -199,8 +199,11 @@ extension UICollectionView {
             self.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredVertically, animated: true)
             return
         }
-
-        autoScroll(to: minY)
+        
+        // calculate the offset step so that it will scroll to target offset in approx 3 seconds
+        // use 0.033 since that's how long it will animate each step scroll
+        let step = CGFloat(minY * 0.033 / 3)
+        autoScroll(to: minY, with: step)
         
     }
 }
