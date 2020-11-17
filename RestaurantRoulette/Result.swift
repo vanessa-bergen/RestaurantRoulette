@@ -37,7 +37,10 @@ struct Result: Codable, Hashable {
             // if there are no opening_hours, return true so that it will be included in the results
             return true
         }
-        return opening_hours.open_now
+        guard let open_now = opening_hours.open_now else {
+            return true
+        }
+        return open_now
     }
     
     var price: Int {
@@ -70,7 +73,7 @@ struct Result: Codable, Hashable {
 }
 
 struct OpenNow: Codable {
-    var open_now: Bool
+    var open_now: Bool?
 }
 
 struct Location: Codable {

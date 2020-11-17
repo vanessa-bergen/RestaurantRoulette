@@ -12,7 +12,7 @@ import CoreLocation
 class GoogleData: ObservableObject {
     @Published var results = [Result]() {
         willSet {
-            print("results set")
+            
             objectWillChange.send()
         }
     }
@@ -23,11 +23,7 @@ class GoogleData: ObservableObject {
     @Published var price = 4
     @Published var openNow = true
 
-    var foodTypes: [String] = [""] {
-        didSet {
-            print("foodTypes \(foodTypes)")
-        }
-    }
+    var foodTypes: [String] = [""]
     
     @Published var centerCoordinate = CLLocationCoordinate2D() {
         didSet {
@@ -49,20 +45,15 @@ class GoogleData: ObservableObject {
         openNow: Bool,
         foodTypes: [String]
     ) {
-        print("called loadData")
+        
         temp.removeAll()
         
         let urls = foodTypes.map { "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(location.latitude),\(location.longitude)&radius=\(radius * 1000)&type=restaurant&keyword=\($0)&key=\(API_KEY)"
             
         }
-        print("urls \(urls)")
-        
         
         for url in urls {
             group.enter()
-            
-            print("first url \(url), in dispatch")
-            
             guard let url = URL(string: url) else {
                 print("Invalid URL")
                 return
@@ -83,7 +74,7 @@ class GoogleData: ObservableObject {
                     print("Error: missing response data")
                     return
                 }
-                    
+
                 do {
                     let decodedResponse = try JSONDecoder().decode(Response.self, from: data)
                     
@@ -95,7 +86,7 @@ class GoogleData: ObservableObject {
                     return
                     
                 } catch {
-                    print("Error 1: \(error.localizedDescription)")
+                    print("Decoding data error: \(error)")
                 }
             
                 print("Fetch failed: \(error?.localizedDescription ?? "Unknown error")")
@@ -105,8 +96,6 @@ class GoogleData: ObservableObject {
         }
 
         group.notify(queue: DispatchQueue.main) {
-            print("done dispath")
-            print("temp \(self.temp)")
             // removing any duplicates
             self.temp = Array(Set(self.temp))
             // filtering the results since the nearby search does not work as expected when multiple filter criteria are added
